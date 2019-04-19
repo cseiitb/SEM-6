@@ -1,0 +1,350 @@
+
+<!-- saved from url=(0098)https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-3/lab-assignment-3.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="./CS 386_ Lab Assignment 3_files/style.css">
+<title>CS 386: Lab Assignment 3</title>
+</head>
+
+<body>
+
+
+<center>
+<h2>
+CS 386: Lab Assignment 3
+</h2>
+(TAs in charge: Mihir Kulkarni and Anand Dhoot)
+</center>
+
+<p><b>Acknowledgement:</b> This lab assignment is prepared from
+several resources:
+the <a href="http://yann.lecun.com/exdb/mnist/">MNIST</a> data set,
+the <a href="https://keras.io/">Keras</a> library, and
+the <a href="http://playground.tensorflow.org/">Tensorflow
+Playground</a>. We thank the creators of these resources for making
+them available to the public.</p>
+
+<p>We continue with the same task we investigated in Lab Assignment 2:
+designing classifiers for the OCR of scanned handwritten digits. In
+this assignment, you will design a feed-forward neural network (also
+popularly known as a Multilayer Perceptron) classifier for the
+task. Feed-forward neural networks form the basis for modern
+<i>Deep Learning</i> models. However, the networks with which you will
+experiment in this assignment will still be relatively small compared
+to some of today's instances.</p>
+
+<br>
+<div align="center" style="float:CENTER; margin:0 15px 5px 0;">
+    <img src="./CS 386_ Lab Assignment 3_files/tikz41.png" alt="An artificial neural network">
+</div>
+<p align="center">
+An artificial neural network with 3 hidden layers <br>
+<font size="1">(Image source: http://neuralnetworksanddeeplearning.com/images/tikz41.png.)</font>
+</p>
+
+<p>We continue to use
+the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a>
+which contains a collection of handwritten numerical digits (0-9) as
+28x28-sized greyscale images. These images have been size-normalized
+and centered in a fixed-size image. For the previous assignment, we
+used only 1000 images for training the Perceptron. Since a neural
+network has many neurons that need to be trained (and consequently,
+many tunable parameters), it typically needs a lot more data to be
+trained successfully. MNIST provides a total 70,000 examples, divided
+into a test set of 10,000 images and a training set of 60,000
+images. In this assignment, we will carve out a validation set of
+10,000 images from the MNIST training set, and use the remaining
+50,000 examples for training.</p>
+
+<p>The ideal assignment to understand the working of neural networks
+would be to code up the backpropagation algorithm, taking into account
+variations in activation functions and loss functions. However, there
+are several libraries available that provide optimised implementations
+of such low-level primitives, and allow the programmer to instead
+focus on high-level network design. In this assignment, we will
+use <a href="https://keras.io/">Keras</a>, which is a high-level
+library developed
+over <a href="https://www.tensorflow.org/">Tensorflow</a>
+and <a href="http://deeplearning.net/software/theano/">Theano</a> for
+quick prototyping.</p>
+
+
+<h3>Code</h3> 
+
+<p>The base code for this assignment is available
+in <a href="https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-3/lab03-base.zip">this zip file</a>. Below is the list of files
+present in the <code>lab03-base</code> directory.</p> 
+
+ <table style="width:100%">
+
+  <tbody><tr>
+    <td><b>File Name</b></td>
+    <td><b>Description</b></td>
+  </tr>
+
+  <tr>
+    <td><code>neural-network.py</code></td>
+    <td>This file contains base code in Keras to create a simple 1-layer neural network.
+  </td></tr>
+
+  <tr>
+    <td><code>generic-plot.gnuplot</code></td>
+    <td>A generic gnuplot script.
+  </td></tr>
+
+  <tr>
+    <td><code>experiments.sh</code></td>
+    <td>A simple script for running experiments.
+  </td></tr>
+   <tr>
+    <td><code>playground.zip</code></td>
+    <td>This file is to be unzipped to create a local (edited) copy of the Tensorflow playground for Task 4.
+  </td></tr>
+</tbody></table>
+
+<h3>Task 0: Creating a basic network (Ungraded)</h3> 
+
+<p>Just like the previous assignment, we have provided you a basic
+skeleton of code to get you started. In the file
+<code>neural-network.py</code>, you have everything needed to create,
+train, and evaluate the performance of a neural network. The comments
+provided in this file, along with
+the <a href="https://keras.io/">Keras documentation</a>, should help
+you develop an understanding of the steps involved. Run the code
+using the following command.</p>
+
+<p><code>python neural-network.py</code></p>
+
+<p>You will see the progress of the neural network training on your
+terminal. Here is the meaning of the terms you see.
+</p><ul>
+ <li>"Epoch" refers to an entire pass through the training data, correspondingly training the network via backpropagation.
+ </li><li>"ETA" is an estimate of the amount of time left for the epoch to finish. 
+ </li><li> "loss/val_loss/Test score" is the value of the loss function on the training/validation/test data.
+ </li><li> "acc/val_acc/Test accuracy" is the fraction of correct predictions made by the network on training/validation/test data.
+</li></ul>
+
+
+<h3>Task 1: Analysing performance (4 marks)</h3> 
+
+<p>You must have noticed that one needs to set several
+parameters—such as the number of hidden layers, the number of
+neurons in each hidden layer, the non-linearity or activation function
+to be used, etc. These quantities are known as the hyper-parameters of
+the network. They need to be specified by the user creating the neural
+network model.</p>
+
+<p>In this task, you will evaluate the performance of your network for
+varying values of hyperparameters. Keeping the rest of the values
+constant (and equal to the default values), adjust the values of
+parameters as described below. Find the performance (accuracy) of your
+model on the validation set and plot a trend graph for each of the
+following.</p> 
+
+<ul>
+  <li>Batch size: 1, 2, 4, 8, 16, 32, 64, 128 (default 32).</li>
+  <li>Number of hidden layers: 1, 2, 4, 6, 8 (default 2).</li>
+  <li>Learning Rate: 0.01, 0.05, 0.1, 0.2, 0.4, 0.8 (default 0.01).</li>
+</ul>
+
+Use these values to create the most successful model you can
+(evaluated based on validation scores) and report its accuracy on the
+test data. Keep all other hyperparameters (number of epochs,
+validation split, activation function, etc.) at their default
+settings. Modify <code>neural-network.py</code> to do so. The file
+expects one command-line argument by default. Edit corresponding lines
+of code in the file to read in the required hyperparameter.<p></p>
+
+<p>You can use <code>experiments.sh</code> as a template to run your
+experiments. A generic gnuplot script to plot your graphs is present
+in the file <code>generic-plot.gnuplot</code>. Print values of the
+parameter you are varying (batch size, hidden layers, learning rate)
+in the first column, and the corresponding validation accuracy in the
+second column, in a comma-separated file (which is read and plotted by
+<code>generic-plot.gnuplot</code>). Plot using this command.</p>
+
+<p><code>gnuplot generic-plot.gnuplot</code></p>
+
+<p>Save the graphs
+as <code>batch-size.png</code>, <code>num-hidden-layers.png</code>,
+and <code>learning-rate.png</code>. Write a brief description of the
+variation observed in each graph and your hypothesis explaining the
+variation in your own words. Should accuracy alone be the criterion
+deciding a parameter setting? What could be other considerations in
+practice?  Put your answers in plain text
+in <code>task1-answers.txt</code>.</p>
+
+<p><b>Evaluation:</b> Each plot will be evaluated for 1 mark (for the
+correctness of the graph, as well as the interpretation), and the
+final architecture and its accuracy will also be evaluated for 1 mark.</p>
+
+
+<h3>Task 2: Confusion matrix (2 marks)</h3> 
+
+<p>One of the key steps to improve the performance of your classifier
+is to identify the misclassifications being made by the model. This
+step can be used to identify the classes that need to be separated
+(say, by creating new features or by training on more examples). In
+this task, you will create a 'confusion matrix' of the performance of
+your model on the validation set.
+
+</p><p>A confusion matrix is a square matrix with one row and one
+column for each label. Each cell in the matrix contains the number of
+instances whose true label is that of <i>row</i> of the cell, but
+which our classifier predicted as the label corresponding to
+the <i>column</i> of the cell. Therefore, if an example with true
+label 'x' gets classified as 'y' by our classifier, it would
+contribute to the total in cell (x, y). Since the diagonal elements
+represent the number of points for which the predicted label is equal
+to the true label, and off-diagonal elements are those that are
+mislabeled by the classifier, the higher the diagonal values of the
+confusion matrix, the better. Below is an illustrative confusion
+matrix for a 3-class classification problem.</p>
+
+<table style="border-collapse: collapse; padding: 10px; text-align: center; " align="center" cellpadding="10">
+  <tbody><tr> 
+    <th colspan="2"></th>
+    <th colspan="4">Predicted label</th>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td> <th> 1 </th> <th> 2 </th> <th> 3 </th>
+  </tr>
+  <tr>
+    <th rowspan="3"> True <br>label </th>
+    <th> 1 </th> <td> 130 </td> <td> 1 </td> <td> 10 </td>
+  </tr>
+  <tr>
+    <th> 2 </th> <td> 10 </td> <td> 110 </td> <td> 16 </td>
+  </tr>
+  <tr>
+    <th> 3 </th> <td> 12 </td> <td> 7 </td> <td> 90 </td>
+  </tr>
+</tbody></table>
+<p align="center">
+Representative confusion matrix for 3 labels. 
+</p>
+
+<p>For this exercise, set the hyperparameters of the network to the
+values that resulted in the maximum validation accuracy in Task
+1. Train your model and evaluate the performance of your model on the validation set. Now use the predictions of your model and the true labels of the validation set to create the 10x10 confusion matrix. Note that the (i,j)<sup>th</sup>
+element of the array should correspond to the number of examples
+belonging to class i, that your network classified as j. </p>
+
+<p>Copy or print your confusion matrix to the
+file <code>task2-answers.txt</code>. Also answer the following
+questions in <code>task2-answers.txt.</code>
+</p><ol>
+  <li>Between which two classes does your model get the most confused? 
+Which one of those is the true label and which one is the prediction? </li>
+  <li>What would you do if you wanted to make fewer misclassifications of one particular class?</li>
+</ol>
+
+
+<h3>Task 3: Overfitting (2 marks)</h3>
+
+<p>The main purpose of creating a machine learning model is to obtain
+good performance on unseen test data (not part of the training set of
+the model). If a model does this, it is said to generalise well to
+unknown test sets.</p>
+
+<p>In the case of neural networks, training is really the modification
+of weights and biases of individual neurons. Every weight and bias is
+a 'free parameter' of the model and can be 'tuned' as the network is
+trained to do correct classifications. How many parameters does your
+neural network created in the Task 2 have? Write down the number and
+show the calculation to obtain it in the
+file <code>task3-answers.txt</code>.</p>
+
+<p>With so many parameters, would it always be the case that the
+neural network you have created generalises well? Find out by training
+the neural network on just the first 1000 of the 50,000 training
+examples, for 500 iterations. Write down the loss and the
+accuracy on the training set as well as the test set for the trained
+network; leave your answer in the
+file <code>task3-answers.txt</code>.</p>
+
+<p>If you have performed the experiments correctly, you will notice
+that it is almost as though the network is memorising the
+training set, without understanding digits well enough to generalise
+to the test set. This is known as 'overfitting'. There are several
+ways to prevent overfitting, such as reducing the number of parameters
+(layers, neurons) in the network, training on more data, etc. Other
+techniques such as early stopping, regularisation of weights, and
+dropout, are beyond the scope of this assignment.</p>
+
+<p><b>Evaluation:</b> Each question above carries 1 mark.
+
+
+</p><h3>Task 4: Visualizing a neural network (2 marks)</h3> 
+
+
+<p>Each neuron in a neural network defines regions in feature space
+corresponding to the different predictions. By using more neurons and
+hidden layers, we can create increasingly complex boundaries for these
+regions.</p>
+
+<p>In this task, we want you to play around with neural networks in
+an edited version of
+the <a href="http://playground.tensorflow.org/">Tensorflow
+Playground</a>, and to classify the `spiral' and the 'flower' data sets
+using as few layers (and number of neurons in those layers) as
+possible. Under the "Data" panel on the left, 'spiral' is the data set
+in the second row and second column, while 'flower' is the data set in
+the third row and first column. Use only the features X1 and X2,
+without regularisation. Feel free to choose your activation function,
+learning rate and other hyperparameters. Instructions to run the
+visualisations are as follows.</p>
+
+<p>Download
+the <a href="https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-3/playground.zip">edited
+version</a> of the Tensorflow Playground. After unzipping the folder,
+run the following commands:<br> </p>
+<code>cd playground</code><br>
+<code>npm run clean</code><br>
+<code>npm run build</code><br>
+<code>npm run serve</code><br>
+<p>This should get the server running on <code>localhost:8080</code> (enter this in your browser). </p>
+
+<p>Experiment with various topologies in order to get a (near-)perfect
+classification of the data points, using a minimal architecture. You
+need to attach screenshots of the model that does complete
+classification. Save the screenshots
+as <code>classify-spiral.png</code>
+and <code>classify-flower.png</code>. Also, explain how your chosen
+architecture and hyperparameters 'work' on each data set. Do so
+in <code>task4-answers.txt</code>.</p>
+
+<p><b>Evaluation:</b> 1 mark for each data set. Note that you must achieve a test loss of 0.07 or less.</p>
+
+<p><b>Extra (no credit):</b> Play around with the code to generate
+your own data sets. You might want to clear the cache of your browser
+before running this code afresh, since it is possible that saved
+cookies will not allow your changes to be visible after you edit the
+code.</p>
+
+
+
+<h3>Submission</h3> 
+
+<p>You are not done yet! Place all files in which you have written
+code or modified in a directory named your roll number (say
+12345678). Tar and Gzip the directory to produce a single compressed
+file (12345678.tar.gz). It must contain the following files.</p>
+
+<ol>
+  <li><code>neural-network.py        </code></li>
+  <li><code>batch-size.png           </code></li>
+  <li><code>num-hidden-layers.png    </code></li>
+  <li><code>learning-rate.png        </code></li>
+  <li><code>classify-spiral.png      </code></li>
+  <li><code>classify-flower.png      </code></li>
+  <li><code>task1-answers.txt        </code></li>
+  <li><code>task2-answers.txt        </code></li>
+  <li><code>task3-answers.txt        </code></li>
+  <li><code>task4-answers.txt        </code></li>
+  <li><code>citations.txt            </code> (If you have used any on-line code or resources, cite them in this file.)</li>
+  <li>Any other file that you have modified or created to solve this assignment</li>
+</ol>
+
+<p>Submit this compressed file on Moodle, under Lab Assignment 3.</p>
+</body></html>

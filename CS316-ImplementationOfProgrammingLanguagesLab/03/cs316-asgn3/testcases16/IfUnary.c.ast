@@ -1,0 +1,35 @@
+Program:
+   Procedure: main, Return Type: void
+
+      Sequence Ast:
+
+         Asgn:
+            LHS (Name : a)
+            RHS (Num : 2)
+         Asgn:
+            LHS (Name : b)
+            RHS (Num : 4)
+         Asgn:
+            LHS (Name : d)
+            RHS (Num : 10)
+         IF : 
+         CONDITION (
+            Condition: GE
+               LHS (Name : a)
+               RHS (
+            Arith: UMINUS
+               LHS (Name : b)))
+         THEN (
+         Asgn:
+            LHS (Name : a)
+            RHS (
+            Arith: PLUS
+               LHS (Name : a)
+               RHS (Num : 1)))
+         ELSE (
+         Asgn:
+            LHS (Name : b)
+            RHS (
+            Arith: PLUS
+               LHS (Name : b)
+               RHS (Num : 1)))

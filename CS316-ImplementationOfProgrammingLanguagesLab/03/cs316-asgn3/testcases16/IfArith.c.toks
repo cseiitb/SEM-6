@@ -1,0 +1,64 @@
+Line: 1 	Ignored lexeme: '// Boolean condition cannot be an arithmetic expression.'
+Line: 2 	Ignored NEWLINE character
+Line: 2 	Token Name: VOID 	Token: void 	Token Code: 262
+Line: 2 	Ignored lexeme: ' '
+Line: 2 	Token Name: NAME 	Token: main 	Token Code: 259
+Line: 2 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 2 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 2 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 3 	Ignored NEWLINE character
+Line: 4 	Ignored NEWLINE character
+Line: 4 	Token Name: NAME 	Token: main 	Token Code: 259
+Line: 4 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 4 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 5 	Ignored NEWLINE character
+Line: 5 	Token Name: META CHAR 	Token: { 	Token Code: 123
+Line: 6 	Ignored NEWLINE character
+Line: 6 	Ignored lexeme: '	'
+Line: 6 	Token Name: INTEGER 	Token: int 	Token Code: 260
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 6 	Token Name: META CHAR 	Token: , 	Token Code: 44
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Token Name: NAME 	Token: b 	Token Code: 259
+Line: 6 	Token Name: META CHAR 	Token: , 	Token Code: 44
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Token Name: NAME 	Token: c 	Token Code: 259
+Line: 6 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 7 	Ignored NEWLINE character
+Line: 7 	Ignored lexeme: '	'
+Line: 7 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 267
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: NUM 	Token: 3 	Token Code: 257
+Line: 7 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: NAME 	Token: b 	Token Code: 259
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 267
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: NUM 	Token: 5 	Token Code: 257
+Line: 7 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: NAME 	Token: c 	Token Code: 259
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 267
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: NUM 	Token: 10 	Token Code: 257
+Line: 7 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 8 	Ignored NEWLINE character
+Line: 8 	Ignored lexeme: '	'
+Line: 8 	Token Name: IF 	Token: if 	Token Code: 263
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 8 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: ARITHOP 	Token: + 	Token Code: 43
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: NAME 	Token: b 	Token Code: 259
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: ARITHOP 	Token: * 	Token Code: 42
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: NAME 	Token: c 	Token Code: 259
+Line: 8 	Token Name: META CHAR 	Token: ) 	Token Code: 41

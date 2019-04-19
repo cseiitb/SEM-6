@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<!-- saved from url=(0098)https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-5/lab-assignment-5.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS 386: Lab Assignment 5</title>
+<link rel="stylesheet" href="./CS 386_ Lab Assignment 5_files/default.css">
+<script src="./CS 386_ Lab Assignment 5_files/MathJax.js" id=""></script>
+</head>
+<body><div class="container" style="width: 90%; margin: auto; font-size: 16px;"><hr>
+
+
+
+<h1 id="cs-386-lab-assignment-5-15-marks">CS 386: Lab Assignment 5</h1>
+
+<p>(TA in charge: Pragy Agarwal)</p>
+
+<p>The focus of this lab is <strong>k-means clustering</strong>. We will look at the vanilla algorithm, its performance, and some better variants. Finally, we will use clustering for classifying the MNIST data set.</p>
+
+
+
+<h2 id="code-and-datasets">Code and data sets</h2>
+
+<p>Some starter code and data sets have been provided for you here: <a href="https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-5/rollno_lab5.tar.gz">rollno_lab5.tar.gz</a>. Uncompress this directory to find the following files.</p>
+
+
+<h4 id="kmeanspy"><strong><code>kmeans.py</code></strong></h4>
+
+<p>This file implements the k-means clustering algorithm. This is the
+only file in which you need to write code. You need to implement the
+following 9 functions in the file, under different tasks (described
+below).</p>
+
+<ol>
+<li><code>distance_euclidean(p1, p2)</code></li>
+<li><code>distance_manhattan(p1, p2)</code></li>
+<li><code>initialization_forgy(data, k)</code></li>
+<li><code>initialization_randompartition(data, distance, k)</code></li>
+<li><code>initialization_kmeansplusplus(data, distance, k)</code></li>
+<li><code>iteration_one(data, means, distance)</code></li>
+<li><code>hasconverged(old_means, new_means, epsilon=1e-1)</code></li>
+<li><code>iteration_many(data, means, distance, maxiter, epsilon=1e-1)</code></li>
+<li><code>performance_SSE(data, means, distance)</code></li>
+</ol>
+
+<p><strong>Tip:</strong> Each function is labeled with the task number. If you are working on Task 1, search the file for <code>task1</code>.</p>
+
+<p>After implementing the functions, you can execute your code as
+follows; the command-line options are explained below.</p>
+
+<p><code>python kmeans.py --input datasets/flower.csv --iter 100 --epsilon 1e-3 --init forgy --dist euclidean --k 8</code></p>
+
+<blockquote>
+  <table>
+<thead>
+<tr>
+  <th align="left">Argument</th>
+  <th align="left"></th>
+  <th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="left"><code>--seed</code></td>
+  <td align="left">int</td>
+  <td align="left">The RNG seed to be used.</td>
+</tr>
+<tr>
+  <td align="left"><code>--input</code></td>
+  <td align="left">str</td>
+  <td align="left">Data set filename</td>
+</tr>
+<tr>
+  <td align="left"><code>--output</code></td>
+  <td align="left">str</td>
+  <td align="left">Output filename</td>
+</tr>
+<tr>
+  <td align="left"><code>--iter</code></td>
+  <td align="left">int</td>
+  <td align="left">Maximum number of iterations of the k-means algorithm to perform (may stop earlier if convergence is achieved)</td>
+</tr>
+<tr>
+  <td align="left"><code>--epsilon</code></td>
+  <td align="left">float</td>
+  <td align="left">Minimum distance the cluster centroids move between two consecutive iterations for the algorithm to continue.</td>
+</tr>
+<tr>
+  <td align="left"><code>--init</code></td>
+  <td align="left">str</td>
+  <td align="left">The initialisation algorithm to be used, from among {forgy, randompartition, kmeans++}</td>
+</tr>
+<tr>
+  <td align="left"><code>--dist</code></td>
+  <td align="left">str</td>
+  <td align="left">The distance metric to be used, from among {euclidean, manhattan}</td>
+</tr>
+<tr>
+  <td align="left"><code>--k</code></td>
+  <td align="left">int</td>
+  <td align="left">The number of clusters to use</td>
+</tr>
+</tbody></table>
+
+</blockquote>
+
+
+
+<h4 id="autograderpy"><strong><code>autograder.py</code></strong></h4>
+
+<p>Execute this script as <code>python autograder.py
+[task-number]</code>. Running <code>python autograder.py all</code>
+will give you an estimate of your final grade. We will use our own
+test cases and judgement before finalising the grade.</p>
+
+
+
+<h4 id="mnistplotpy"><strong><code>mnistplot.py</code></strong></h4>
+
+<p>This is a tool to visualise your MNIST cluster means, that you will
+need in Task 3. Execute it as <code>python mnistplot.py
+mnist.txt</code>.</p>
+
+
+
+<h4 id="datasets"><strong><code>datasets/*</code></strong></h4>
+
+<p>This directory contains the data sets you will be using during this
+lab. Each line in the files is a comma separated list of numbers,
+representing a point in <script type="math/tex" id="MathJax-Element-2">\mathbb{R}^d</script>.</p>
+
+<p><code>100.csv</code>, <code>1000.csv</code>, and <code>10000.csv</code> were sampled from multivariate Gaussians with diagonal covariance. They have data in <script type="math/tex" id="MathJax-Element-3">\mathbb{R}^{10}, \mathbb{R}^{50}</script>, and <script type="math/tex" id="MathJax-Element-3">\mathbb{R}^{100}</script>, respectively.</p>
+
+<p>Submission details and useful resources are at the bottom.</p>
+
+<hr>
+
+
+
+<h1 id="section-1-understanding-k-means-clustering">Section 1: Understanding k-means clustering</h1>
+
+<p>k-means clustering is an unsupervised learning algorithm, which aims to cluster the given data set into <script type="math/tex" id="MathJax-Element-4">k</script> clusters.</p> Formally, the clustering problem it tries to solve can be stated as:<p></p>
+
+<p>Given a set of observations <script type="math/tex" id="MathJax-Element-5">(x^1, x^2, \ldots, x^n), x^i \in \mathbb{R}^d</script>, partition the <script type="math/tex" id="MathJax-Element-6">n</script> observations into <script type="math/tex" id="MathJax-Element-7">k~(\leq n)</script> sets <script type="math/tex" id="MathJax-Element-8">S = \{S_1, S_2, \ldots, S_k\}</script> so as to minimise the within-cluster sum of squares (WCSS) (sum of distance functions of each point in the cluster to its cluster centre). In other words, its objective is to find: <br>
+<script type="math/tex; mode=display" id="MathJax-Element-10">{\displaystyle {\underset {\mathbf {S} }{\operatorname {arg\,min} }}\sum _{i=1}^{k}\sum _{\mathbf {x} \in S_{i}}\left\|\mathbf {x} -{\boldsymbol {\mu }}_{i}\right\|^{2}}</script> <br>
+where <script type="math/tex" id="MathJax-Element-11">\mu_i</script> is the mean of points in <script type="math/tex" id="MathJax-Element-12">S_i</script>.</p>
+
+<p>Finding the optimal solution to this problem is NP-Hard for general n, d, and k. k-means clustering is a heuristic approach to the above clustering problem, that provably converges to a <strong>local optimum</strong>.</p>
+
+
+
+<h2 id="k-means-algorithm">k-means Algorithm</h2>
+
+<ol>
+<li>Define the initial clusters’ centroids. This step can be done using different strategies. A very common one is to assign random values for the centroids of all groups. Another approach, known as the <strong><em>Forgy initialisation</em></strong>, is to use the values of <script type="math/tex" id="MathJax-Element-13">k</script> different entities as being the centroids.</li>
+<li>Assign each entity to the cluster that has the closest centroid. In order to find the cluster with the closest centroid, the algorithm must calculate the distance between all the entities and each centroid.</li>
+<li>Recalculate the centroids. Each component of the centroid is updated, and set to be the average of the corresponding components of the points that belong to the cluster.</li>
+<li>Repeat steps 2 and 3 until points can no longer change cluster.</li>
+</ol>
+
+
+
+<h2 id="cluster-initialization-forgy">Cluster Initialisation: Forgy</h2>
+
+<p>This is one of the simplest ways to initialise the k-means algorithm. The Forgy method randomly chooses <script type="math/tex" id="MathJax-Element-14">k</script> points from the data set and uses these as the initial means. This ensures that the initial clusters are uniformly spread out across the data.</p>
+
+
+
+<h2 id="measuring-performance-sum-squared-error-sse">Measuring Performance: Sum Squared Error (SSE)</h2>
+
+<p>k-means clustering tries to locally minimise the Sum Squared Error, where the error associated with each data point is taken as its Euclidean distance from the cluster centre.
+
+  </p><h3 id="task-1-implementing-k-means-clustering-6-marks">Task 1: Implementing k-means clustering (6 marks)</h3>
+
+  <p>Implement all of the following 7 functions in <code>kmeans.py</code>.</p>
+  
+  <ol>
+  <li><code>distance_euclidean(p1, p2)</code></li>
+  <li><code>distance_manhattan(p1, p2)</code></li>
+  <li><code>initialization_forgy(data, k)</code></li>
+  <li><code>iteration_one(data, means, distance)</code></li>
+  <li><code>hasconverged(old_means, new_means, epsilon)</code></li>
+  <li><code>iteration_many(data, means, distance, numiter, epsilon)</code></li>
+  <li><code>performance_SSE(data, means, distance)</code></li>
+  </ol>
+  
+  <p>Test your code by running this command.</p>
+
+<pre><code>python kmeans.py --input datasets/flower.csv --iter 100 --epsilon 1e-3 --init forgy --dist euclidean --k 8 --seed $RANDOM
+</code></pre>
+  
+  <p>Try different values of <script type="math/tex" id="MathJax-Element-16">k</script>, and try both Euclidean and Manhattan distances.</p>
+  
+  <p><strong>Evaluation:</strong> Each correctly implemented function will fetch you <script type="math/tex" id="MathJax-Element-17">0.5</script> mark. If all <script type="math/tex" id="MathJax-Element-18">7</script> functions are correctly implemented, you get another <script type="math/tex" id="MathJax-Element-19">2.5</script> marks. </p>
+  
+  <p>Test with <code>python autograder.py 1</code>.</p>
+  
+  <hr>
+  
+  <h3 id="task-2-testing-performance-3-marks">Task 2: Testing and Performance (3 marks)</h3>
+  
+  <p>Test your code on the following data sets.<br>
+  <code>datasets/100.csv</code>: Use <script type="math/tex" id="MathJax-Element-20">k=2</script>, numexperiments <script type="math/tex" id="MathJax-Element-21">=100</script> <br>
+  <code>datasets/1000.csv</code> : Use <script type="math/tex" id="MathJax-Element-22">k=5</script>, numexperiments <script type="math/tex" id="MathJax-Element-23">=25</script> <br>
+  <code>datasets/10000.csv</code> : Use <script type="math/tex" id="MathJax-Element-24">k=20</script>, numexperiments <script type="math/tex" id="MathJax-Element-25">=10</script></p>
+  
+  <p>Use epsilon<script type="math/tex" id="MathJax-Element-26">=10^{-2}</script> and the Euclidean distance metric for every experiment. Here is an example.</p>
+  
+  <code>python kmeans.py --epsilon 1e-2 --init forgy --dist euclidean --input datasets/100.csv --k 2 -numexperiments 100</code><p></p>
+  
+  <p>Answer the following 4 questions in the file <code>solutions.txt</code>.</p>
+  
+  <ol>
+  <li>For each data set, report “average SSE” and “average iterations”. <strong>[1.5 marks]</strong></li>
+  <li>Run your code on <code>datasets/garden.csv</code>, with different values of <script type="math/tex" id="MathJax-Element-27">k</script>. Look at the performance plots and answer whether the SSE of the k-means clustering algorithm ever increases as the iterations are performed. Is your answer the same for both Euclidean and Manhattan distances?<strong>[0.5 mark]</strong></li>
+  <li>Regarding the answer to question 2 , why do you think this happens? What does it imply? <strong>[0.5 mark]</strong></li>
+  <li>Look at the files <code>3lines.png</code> and <code>mouse.png</code>. Manually draw cluster boundaries around the 3 clusters visible in each file (no need to submit the hand drawn clustering). Test the k-means algorithm with different random seeds on the data sets <code>datasets/3lines.csv</code> and <code>datasets/mouse.csv</code>. How does the algorithm’s clustering compare with the clustering you did by hand? Why do you think this happens? <strong>[0.5 mark]</strong></li>
+  </ol>
+  
+  <p><strong>Evaluation:</strong> The text questions carry marks as specified. Make sure to write clean, succinct answers.</p>
+
+
+<p>It is worth noting that k-means can be made to perform arbitrarily poorly! Test your algorithm on the <code>datasets/rectangle.csv</code> data several times, using <script type="math/tex" id="MathJax-Element-29">k=2</script>. Depending on the initialisation, k-means will converge to the worst possible clustering!</p>
+
+<hr>
+
+
+
+<h1 id="section-2-initialization-methods">Section 2: Initialisation Methods</h1>
+
+
+
+<h2 id="random-partition">Random Partition</h2>
+
+<p>The Random Partition initialisation method splits the data into <script type="math/tex" id="MathJax-Element-30">k</script> randomly chosen partitions.</p>
+
+<ul>
+<li>For each data point <script type="math/tex" id="MathJax-Element-31">x_i \in \mathbb{R}^d</script>, assign it to exactly one random partition <script type="math/tex" id="MathJax-Element-32">s_i \in S, i \in \{1, 2, \ldots, k\}</script>.</li>
+<li>Compute the initial centroid of each partition <script type="math/tex" id="MathJax-Element-33">s_i</script> as the centroid of all the points assigned to that partition.</li>
+</ul>
+
+<p>Random partition thus places the initial cluster means close to the centre of the data set.</p>
+
+
+
+<h2 id="k-means">k-means++</h2>
+
+<p>The clustering performance of the k-means algorithm is sensitive to the initial cluster means. A poor initialisation can lead to arbitrarily poor clustering. The k-means++ initialisation algorithm addresses this problem; standard k-means clustering is performed after the initialisation step. With the k-means++ initialisation, the algorithm is guaranteed to find a solution that is <script type="math/tex" id="MathJax-Element-34">\mathcal{O}(log k)</script> competitive to the optimal k-means solution in expectation.</p>
+
+<p>The intuition behind this approach is that spreading out the k
+initial cluster centres is a good idea: the first cluster centre is
+chosen uniformly at random from the data points, after which each
+subsequent cluster centre is chosen from the remaining data points
+with a probability proportional to the point's squared distance to the
+point’s closest existing cluster centre.</p>
+
+<p><strong>The algorithm is as follows.</strong></p>
+
+<ol>
+<li>Choose one centre uniformly at random from among the data points.</li>
+<li>For each data point <script type="math/tex" id="MathJax-Element-35">x^i</script>, compute <script type="math/tex" id="MathJax-Element-36">D(x^i)</script>, the distance between <script type="math/tex" id="MathJax-Element-37">x^i</script> and the nearest centre that has already been chosen.</li>
+<li>Choose one new data point at random as a new cluster centre, using a probability distribution in which point <script type="math/tex" id="MathJax-Element-38">x^{i}</script> is chosen with probability proportional to <script type="math/tex" id="MathJax-Element-39">D(x_i)^2</script>. In other words, the probability that 
+
+<script type="math/tex" id="MathJax-Element-38">x^{i}</script> is made a cluster centre is 
+
+<script type="math/tex" id="MathJax-Element-38">\frac{D(x^{i})^{2}}{\sum_{j \in \{1, 2, \dots, n\}, x^{j} \text{ is not a cluster centre}} D(x^{j})^{2}}</script>.
+
+</li>
+<li>Repeat Steps 2 and 3 until <script type="math/tex" id="MathJax-Element-40">k</script> centres have been chosen.</li>
+<li>Now that the initial centres have been chosen, proceed using standard k-means clustering.</li>
+</ol>
+
+<p>This seeding method yields considerable improvement in both the speed of convergence, and the final error of k-means.</p>
+
+<blockquote>
+  <h3 id="task-3-implementing-random-partition-and-k-means-31-marks">Task 3: Implementing Random Partition and k-means++ (4 marks)</h3>
+  
+  <p>Implement all of the following functions in <code>kmeans.py</code>.</p>
+  
+  <ol>
+  <li><code>initialization_randompartition(data, distance, k)</code></li>
+  <li><code>initialization_kmeansplusplus(data, distance, k)</code></li>
+  </ol>
+  
+  <p><strong>Note</strong>: You are expected to <strong>provide elaborate comments along with your code</strong> (for these 2 functions). Your marks depend on whether the TAs are able to understand your code and establish its correctness.</p>
+  
+  <p>Test with <code>python autograder.py 3</code>.</p>
+  
+  <p>Use your code by running this command.</p>
+
+<pre><code>python kmeans.py --input datasets/flower.csv --epsilon 1e-2 --init kmeans++ --dist euclidean --k 8
+</code></pre>
+  
+  <p>Try both random partition and kmeans++.</p>
+  
+  <hr>
+  
+  <p>After implementing your code, test it on these data sets.</p>
+  
+  <p><code>datasets/100.csv</code>: Use <script type="math/tex" id="MathJax-Element-41">k=2</script>, numexperiments <script type="math/tex" id="MathJax-Element-42">=100</script> <br>
+  <code>datasets/1000.csv</code> : Use <script type="math/tex" id="MathJax-Element-43">k=5</script>, numexperiments <script type="math/tex" id="MathJax-Element-44">=25</script> <br>
+  <code>datasets/10000.csv</code> : Use <script type="math/tex" id="MathJax-Element-45">k=20</script>, numexperiments <script type="math/tex" id="MathJax-Element-46">=10</script></p>
+  
+  <p>Use epsilon<script type="math/tex" id="MathJax-Element-47">=10^{-2}</script> and the Euclidean distance metric for every experiment.</p>
+  
+  <p>Run your experiments for both random partition and kmeans++ initialisation algorithms. Here is an example command.</p>
+
+  <p><code>python kmeans.py --epsilon 1e-2 --init randompartition --dist euclidean --input datasets/100.csv --k 2 -numexperiments 100</code></p>
+  
+  <p>Answer the following question in the file <code>solutions.txt</code>.</p>
+  
+  <ol>
+  <li>For each data set and initialisation algorithm, report “average SSE” and “average iterations”.</li>
+  </ol>
+  
+  <p><strong>Evaluation:</strong> Correct implementation of the randompartition function will fetch you <script type="math/tex" id="MathJax-Element-48">1</script> mark. The kmeansplusplus function is worth <script type="math/tex" id="MathJax-Element-49">2</script> marks. The text question is worth <script type="math/tex" id="MathJax-Element-50">1</script> mark.</p>
+</blockquote>
+
+<p><strong>Notice how:</strong></p>
+
+<ul>
+<li>Randompartition tends to initialise all cluster means near the centre of the data.</li>
+<li>kmeans++ initialisation leads to considerably less cluster movement compared to Forgy initialisation.</li>
+<li>Despite using kmeans++, the algorithm will sometimes converge to poor solutions.</li>
+</ul>
+
+
+
+<h1 id="section-4-clustering-for-classification">Section 3: Clustering for classification</h1>
+
+<p>Supervised machine learning techniques require a data set with a large number of training examples and labels. However, getting labels can be extremely expensive in practice. Unsupervised learning algorithms handle this issue by not requiring any labels at all.</p>
+
+<p>Since k-means clustering is an unsupervised algorithm, we will now use it to classify the MNIST data set.</p>
+
+<p>Procedure:</p>
+
+<ul>
+<li>Cluster the MNIST data set into 10 clusters.</li>
+<li>Visualise each cluster mean as an image.</li>
+<li>Hand label each cluster as a digit</li>
+<li>Use the cluster means for classification.</li>
+</ul>
+
+<p>This procedure enables us to achieve a decent classification accuracy, by hand labeling only a few dozen images (as compared to thousands)!</p>
+
+<blockquote>
+  <h3 id="task-4-mnist-classification-2-marks">Task 4: MNIST classification (2 marks)</h3>
+  
+  <p><strong>Template File:</strong> <code>kmeans.py</code> <br>
+  <strong>Data set:</strong> <code>datasets/mnist.csv</code></p>
+  
+  <p>Run your algorithm on the MNIST data set as follows.</p>
+
+<pre><code>python kmeans.py --input datasets/mnist.csv --iter 100 --epsilon 1e-2 --init kmeans++ --dist euclidean --k 10 --output mnist.txt
+</code></pre>
+  
+  <p>Plot the so found cluster centres by executing this command.</p>
+
+<pre><code>python mnistplot.py mnist.txt
+</code></pre>
+  
+  <p>Look at the plots and find out a good mean for each of the 10 digits. Compile these means into the file <code>mnistmeans.txt</code>. You will have to run the clustering algorithm several times to get satisfactory means. Use the random seed to get different means.</p>
+  
+  <p><strong>File Format for <code>mnistmeans.txt</code></strong>: <br>
+   The <script type="math/tex" id="MathJax-Element-51">i</script> th line must contain the cluster mean for the <script type="math/tex" id="MathJax-Element-52">i-1</script> th digit. <br>
+   Each mean is represented by a comma separated list of <script type="math/tex" id="MathJax-Element-53">784</script> floats.</p>
+  
+  <p><strong>Evaluation:</strong> Your cluster means will be used to classify the MNIST data set.</p>
+  
+  <table>
+<thead>
+<tr>
+  <th align="right">accuracy</th>
+  <th align="left">marks</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="right">accuracy <script type="math/tex" id="MathJax-Element-54"> \geq 50\%</script></td>
+  <td align="left"><script type="math/tex" id="MathJax-Element-55">2</script></td>
+</tr>
+<tr>
+  <td align="right"><script type="math/tex" id="MathJax-Element-56">50 \% > </script> accuracy <script type="math/tex" id="MathJax-Element-57"> \geq 40\%</script></td>
+  <td align="left"><script type="math/tex" id="MathJax-Element-58">1</script></td>
+</tr>
+<tr>
+  <td align="right">otherwise</td>
+  <td align="left"><script type="math/tex" id="MathJax-Element-59">0</script></td>
+</tr>
+</tbody></table>
+
+  
+  <p>Test with <code>python autograder.py 4</code>.</p>
+</blockquote>
+
+<p>In practice, you would want to choose multiple cluster means per class instead of just one, for increased accuracy.</p>
+
+
+
+<h1 id="submission">Submission</h1>
+
+<p>Your submission directory must be named as <code>[rollnumber]_lab5</code>. It must contain the following <script type="math/tex" id="MathJax-Element-60">3</script> files.</p>
+
+<ul>
+<li><code>kmeans.py</code></li>
+<li><code>solutions.txt</code></li>
+<li><code>mnistmeans.txt</code>  (do not submit mnist.txt by mistake)</li>
+</ul>
+
+<p>Do not include any other files.</p> 
+
+<p>For tasks 1 and 2, compress your directory into <code>[rollnumber]_lab5.tar.gz</code>, and upload it to Moodle under Lab Assignment 5.</p>
+
+<p>For tasks 3 and 4, compress your directory (with solutions to <b>all</b> tasks (1, 2, 3, and 4)) into <code>[rollnumber]_lab5_outlab.tar.gz</code>, and upload it to Moodle under Lab Assignment 5 (Outlab).</p>
+
+
+
+
+
+<h1 id="resources">Resources</h1>
+
+<p><a href="https://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Clustering/K-Means">https://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Clustering/K-Means</a> <br>
+<a href="https://en.wikipedia.org/wiki/K-means%2B%2B">https://en.wikipedia.org/wiki/K-means%2B%2B</a> <br>
+<a href="https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set">https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set</a> <br>
+<a href="http://theory.stanford.edu/~sergei/papers/kMeans-socg.pdf">http://theory.stanford.edu/~sergei/papers/kMeans-socg.pdf</a> <br>
+<a href="https://en.wikipedia.org/wiki/K-medians_clustering">https://en.wikipedia.org/wiki/K-medians_clustering</a> <br>
+<a href="http://archive.ics.uci.edu/ml/datasets/Iris">http://archive.ics.uci.edu/ml/datasets/Iris</a> <br>
+<a href="http://www.improvedoutcomes.com/docs/WebSiteDocs/Clustering/K-Means_Clustering_Overview.htm">http://www.improvedoutcomes.com/docs/WebSiteDocs/Clustering/K-Means_Clustering_Overview.htm</a></p>
+
+<h1 id="resources">Erratum/Update</h1>
+
+Please replace the version of autograder.py in your code with  <a href="https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-5/autograder.py">this one</a>.<hr>
+
+
+</div>
+
+
+
+
+
+</body></html>

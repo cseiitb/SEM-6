@@ -1,0 +1,121 @@
+Line: 1 	Token Name: VOID 	Token: void 	Token Code: 263
+Line: 1 	Ignored lexeme: ' '
+Line: 1 	Token Name: NAME 	Token: main 	Token Code: 259
+Line: 1 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 1 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 1 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 2 	Ignored NEWLINE character
+Line: 3 	Ignored NEWLINE character
+Line: 3 	Token Name: NAME 	Token: main 	Token Code: 259
+Line: 3 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 3 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 4 	Ignored NEWLINE character
+Line: 4 	Token Name: META CHAR 	Token: { 	Token Code: 123
+Line: 5 	Ignored NEWLINE character
+Line: 5 	Ignored lexeme: ' '
+Line: 5 	Ignored lexeme: ' '
+Line: 5 	Ignored lexeme: ' '
+Line: 5 	Token Name: INTEGER 	Token: int 	Token Code: 260
+Line: 5 	Ignored lexeme: ' '
+Line: 5 	Token Name: NAME 	Token: n 	Token Code: 259
+Line: 5 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 6 	Ignored NEWLINE character
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Token Name: INTEGER 	Token: int 	Token Code: 260
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Token Name: NAME 	Token: cntr 	Token Code: 259
+Line: 6 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 6 	Ignored lexeme: '	// cntr = 1, even'
+Line: 7 	Ignored NEWLINE character
+Line: 7 	Ignored lexeme: '		// cntr = 0, odd'
+Line: 8 	Ignored NEWLINE character
+Line: 8 	Ignored lexeme: ' '
+Line: 9 	Ignored NEWLINE character
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: NAME 	Token: n 	Token Code: 259
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: NUM 	Token: 3 	Token Code: 257
+Line: 9 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 10 	Ignored NEWLINE character
+Line: 11 	Ignored NEWLINE character
+Line: 11 	Ignored lexeme: '// 1st way of finding whether a number is odd or even.'
+Line: 12 	Ignored NEWLINE character
+Line: 12 	Ignored lexeme: ' '
+Line: 13 	Ignored NEWLINE character
+Line: 13 	Ignored lexeme: '   //if ( n & 1 == 0 )'
+Line: 14 	Ignored NEWLINE character
+Line: 14 	Ignored lexeme: '     // cntr = 1;'
+Line: 15 	Ignored NEWLINE character
+Line: 15 	Ignored lexeme: '   //else '
+Line: 16 	Ignored NEWLINE character
+Line: 16 	Ignored lexeme: '     // cntr = 0;'
+Line: 17 	Ignored NEWLINE character
+Line: 17 	Ignored lexeme: ' '
+Line: 18 	Ignored NEWLINE character
+Line: 18 	Ignored lexeme: '// 2nd way of finding whether a number is odd or even.'
+Line: 19 	Ignored NEWLINE character
+Line: 20 	Ignored NEWLINE character
+Line: 20 	Ignored lexeme: ' '
+Line: 20 	Ignored lexeme: ' '
+Line: 20 	Ignored lexeme: ' '
+Line: 20 	Token Name: IF 	Token: if 	Token Code: 273
+Line: 20 	Ignored lexeme: ' '
+Line: 20 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 20 	Ignored lexeme: ' '
+Line: 20 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 20 	Token Name: NAME 	Token: n 	Token Code: 259
+Line: 20 	Token Name: ARITHOP 	Token: / 	Token Code: 47
+Line: 20 	Token Name: NUM 	Token: 2 	Token Code: 257
+Line: 20 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 20 	Token Name: ARITHOP 	Token: * 	Token Code: 42
+Line: 20 	Token Name: NUM 	Token: 2 	Token Code: 257
+Line: 20 	Ignored lexeme: ' '
+Line: 20 	Token Name: EQ 	Token: == 	Token Code: 267
+Line: 20 	Ignored lexeme: ' '
+Line: 20 	Token Name: NAME 	Token: n 	Token Code: 259
+Line: 20 	Ignored lexeme: ' '
+Line: 20 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 20 	Ignored lexeme: '	// % is replaced with / and *'
+Line: 21 	Ignored NEWLINE character
+Line: 21 	Ignored lexeme: ' '
+Line: 21 	Ignored lexeme: ' '
+Line: 21 	Ignored lexeme: ' '
+Line: 21 	Ignored lexeme: ' '
+Line: 21 	Ignored lexeme: ' '
+Line: 21 	Ignored lexeme: ' '
+Line: 21 	Token Name: NAME 	Token: cntr 	Token Code: 259
+Line: 21 	Ignored lexeme: ' '
+Line: 21 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 21 	Ignored lexeme: ' '
+Line: 21 	Token Name: NUM 	Token: 1 	Token Code: 257
+Line: 21 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 22 	Ignored NEWLINE character
+Line: 22 	Ignored lexeme: ' '
+Line: 22 	Ignored lexeme: ' '
+Line: 22 	Ignored lexeme: ' '
+Line: 22 	Token Name: ELSE 	Token: else 	Token Code: 276
+Line: 23 	Ignored NEWLINE character
+Line: 23 	Ignored lexeme: ' '
+Line: 23 	Ignored lexeme: ' '
+Line: 23 	Ignored lexeme: ' '
+Line: 23 	Ignored lexeme: ' '
+Line: 23 	Ignored lexeme: ' '
+Line: 23 	Ignored lexeme: ' '
+Line: 23 	Token Name: NAME 	Token: cntr 	Token Code: 259
+Line: 23 	Ignored lexeme: ' '
+Line: 23 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 23 	Ignored lexeme: ' '
+Line: 23 	Token Name: NUM 	Token: 0 	Token Code: 257
+Line: 23 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 24 	Ignored NEWLINE character
+Line: 25 	Ignored NEWLINE character
+Line: 26 	Ignored NEWLINE character
+Line: 26 	Token Name: META CHAR 	Token: } 	Token Code: 125
+Line: 27 	Ignored NEWLINE character
+Line: 27 	Token Name: META CHAR 	Token:  	Token Code: -1

@@ -1,0 +1,34 @@
+Program:
+   Procedure: main, Return Type: void
+
+      Sequence Ast:
+
+         Asgn:
+            LHS (Name : n)
+            RHS (Num : 5)
+         Asgn:
+            LHS (Name : fact)
+            RHS (Num : 1)
+         Asgn:
+            LHS (Name : c)
+            RHS (Num : 1)
+         WHILE : 
+         CONDITION (
+            Condition: LE
+               LHS (Name : c)
+               RHS (Name : n))
+         BODY (
+      Sequence Ast:
+
+         Asgn:
+            LHS (Name : fact)
+            RHS (
+            Arith: MULT
+               LHS (Name : fact)
+               RHS (Name : c))
+         Asgn:
+            LHS (Name : c)
+            RHS (
+            Arith: PLUS
+               LHS (Name : c)
+               RHS (Num : 1)))

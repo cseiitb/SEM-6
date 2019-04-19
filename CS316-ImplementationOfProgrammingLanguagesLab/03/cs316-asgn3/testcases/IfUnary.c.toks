@@ -1,0 +1,93 @@
+Line: 1 	Ignored lexeme: '// Increment and decrement operators are not reauired.'
+Line: 2 	Ignored NEWLINE character
+Line: 2 	Token Name: VOID 	Token: void 	Token Code: 263
+Line: 2 	Ignored lexeme: ' '
+Line: 2 	Token Name: NAME 	Token: main 	Token Code: 259
+Line: 2 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 2 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 2 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 3 	Ignored NEWLINE character
+Line: 4 	Ignored NEWLINE character
+Line: 4 	Token Name: NAME 	Token: main 	Token Code: 259
+Line: 4 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 4 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 5 	Ignored NEWLINE character
+Line: 5 	Token Name: META CHAR 	Token: { 	Token Code: 123
+Line: 6 	Ignored NEWLINE character
+Line: 6 	Ignored lexeme: '	'
+Line: 6 	Token Name: INTEGER 	Token: int 	Token Code: 260
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 6 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 7 	Ignored NEWLINE character
+Line: 7 	Ignored lexeme: '	'
+Line: 7 	Token Name: INTEGER 	Token: int 	Token Code: 260
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: NAME 	Token: b 	Token Code: 259
+Line: 7 	Token Name: META CHAR 	Token: , 	Token Code: 44
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: NAME 	Token: d 	Token Code: 259
+Line: 7 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 8 	Ignored NEWLINE character
+Line: 8 	Ignored lexeme: '	'
+Line: 8 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: NUM 	Token: 2 	Token Code: 257
+Line: 8 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: NAME 	Token: b 	Token Code: 259
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: NUM 	Token: 4 	Token Code: 257
+Line: 8 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: NAME 	Token: d 	Token Code: 259
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 8 	Ignored lexeme: ' '
+Line: 8 	Token Name: NUM 	Token: 10 	Token Code: 257
+Line: 8 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 8 	Ignored lexeme: '	'
+Line: 9 	Ignored NEWLINE character
+Line: 10 	Ignored NEWLINE character
+Line: 10 	Ignored lexeme: '	'
+Line: 10 	Token Name: IF 	Token: if 	Token Code: 273
+Line: 10 	Ignored lexeme: ' '
+Line: 10 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 10 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 10 	Ignored lexeme: ' '
+Line: 10 	Token Name: GE 	Token: >= 	Token Code: 265
+Line: 10 	Ignored lexeme: ' '
+Line: 10 	Token Name: ARITHOP 	Token: - 	Token Code: 45
+Line: 10 	Token Name: NAME 	Token: b 	Token Code: 259
+Line: 10 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 11 	Ignored NEWLINE character
+Line: 11 	Ignored lexeme: '	'
+Line: 11 	Ignored lexeme: '	'
+Line: 11 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 11 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 11 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 11 	Token Name: ARITHOP 	Token: + 	Token Code: 43
+Line: 11 	Token Name: NUM 	Token: 1 	Token Code: 257
+Line: 11 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 12 	Ignored NEWLINE character
+Line: 12 	Ignored lexeme: '	'
+Line: 12 	Token Name: ELSE 	Token: else 	Token Code: 276
+Line: 13 	Ignored NEWLINE character
+Line: 13 	Ignored lexeme: '	'
+Line: 13 	Ignored lexeme: '	'
+Line: 13 	Token Name: NAME 	Token: b 	Token Code: 259
+Line: 13 	Ignored lexeme: ' '
+Line: 13 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 13 	Ignored lexeme: ' '
+Line: 13 	Token Name: NAME 	Token: b 	Token Code: 259
+Line: 13 	Token Name: ARITHOP 	Token: + 	Token Code: 43
+Line: 13 	Token Name: NUM 	Token: 1 	Token Code: 257
+Line: 13 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 14 	Ignored NEWLINE character
+Line: 14 	Token Name: META CHAR 	Token: } 	Token Code: 125
+Line: 15 	Ignored NEWLINE character
+Line: 15 	Token Name: META CHAR 	Token:  	Token Code: -1

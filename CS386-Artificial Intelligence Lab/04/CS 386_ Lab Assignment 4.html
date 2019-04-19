@@ -1,0 +1,259 @@
+
+<!-- saved from url=(0098)https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-4/lab-assignment-4.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="./CS 386_ Lab Assignment 4_files/style.css">
+<title>CS 386: Lab Assignment 4</title>
+</head>
+
+<body>
+
+
+<center>
+<h2>
+CS 386: Lab Assignment 4
+</h2>
+(TA in charge: Amit Kumar)
+</center>
+
+<p><b>Acknowledgement:</b> This lab assignment is based on
+the <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a> open
+source Machine Learning package. We thank the creators of this
+resource for making it available to the public.</p>
+
+<p>There is a wide spectrum of methods for supervised learning, each
+with its own inductive bias. Examples include linear methods, neural
+networks, decision trees, and nearest-neighbour
+classifiers. "Meta-learning" algorithms such as boosting and bagging
+use individual learners as blackboxes, and can often improve the
+accuracy of predictions. It exceeds the scope of this introductory
+course to study each of these methods in depth. However, you can
+become familiar with many of them with just a few clicks of the
+mouse. <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a> is a
+user-friendly software meant for quick prototyping of different
+machine learning algorithms.</p>
+
+<br>
+<div align="center" style="float:CENTER; margin:0 15px 5px 0;">
+    <img src="./CS 386_ Lab Assignment 4_files/weka_screenshot.png" alt="Weka screenshot" width="600px">
+</div>
+<p align="center">
+Screenshot of <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a><br><br>
+</p>
+
+<p>This assignment will introduce you to Weka. Your tasks will involve
+training decision trees, neural networks, and decision stumps (which
+are ensembles of "short" decision trees).</p>
+
+<h3>Software and Data Sets</h3> 
+
+<p>We have already installed Weka on SL2 machines, and so all you have to
+do to get started is to run the command</p>
+
+<code>weka</code>
+
+<p>on your terminal. If, however, you encounter an error, you can run it
+from a jar file that we provide you. The jar file for Weka, the
+manual, and the data sets for this assignment are all available
+in <a href="https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-4/Lab4.zip">this zip file</a>. Unzip the file and put it on
+your Desktop. If simply running <code>weka</code> didn't work, you can
+also open the Weka GUI by running the following command.</p>
+
+<code>java -jar $HOME/Desktop/Lab4/weka.jar</code><br>
+
+<p>Also export the location of the "weka.jar" file in the CLASSPATH
+variable.</p>
+
+<code>export CLASSPATH="$HOME/Desktop/Lab4/weka.jar":$CLASSPATH</code><br>
+
+<p>After opening the GUI, feel free to explore the various options:
+data sets, tasks, learning algorithms, and evaluation metrics. You can
+achieve the same functionality through the command line. For example,
+in order to run the J48 algorithm (decision trees) on
+the <code>breast-cancer.arff</code> data set, and see the results of
+5-fold cross-validation, run this command from the terminal.</p>
+
+<code>java weka.classifiers.trees.J48 -x 5 -t breast-cancer.arff</code><br>
+
+<p>Here 't' specifies the training data set and 'x' stands for n-way
+cross validation. You can separately visualise the data set
+characteristics using this command.</p>
+
+<code>java weka.core.Instances breast-cancer.arff</code><br>
+
+
+<p>Before moving on, make sure you can launch the Weka GUI, and also
+run it from the command line.</p>
+
+<p>Data files are read in by Weka in the Attribute-Relation File
+Format (ARFF). See, for example, "breast-cancer.arff". The first few
+uncommented lines describe attributes (which we also call features)
+and their ranges. Then the data is specified, one row at a time: list
+of attributes and label.</p>
+
+
+<h3>Tasks and Evaluation</h3> 
+
+<p>This assignment consists of 4 tasks, each requiring you to run some
+experiments and answer some questions. You will submit your answer to
+each question as a separate text file: make sure you include all the
+commands used in the experiments corresponding to that task (or, if
+necessary, a script to generate the commands). You will also submit
+supporting graphs and data. When there is no specific mention of the
+evaluation metric to use, apply 5-fold cross-validation.</p>
+
+
+<h3>Task 1: Post-pruning of Decision Trees (2 marks)</h3> 
+
+<p>In this first task, you are required to work on the "diabetes.arff"
+data set. You have to apply the J48 classification algorithm with
+<code>-split-percentage</code> as 80. This option will create a
+training data set with 80% of the points, and use the remaining points
+for testing.</p> 
+
+<p>The focus of this exercise is to visualise the effect of the
+parameter called the 'Confidence Factor'. Once the tree has been built
+(nodes with fewer than minNumObj data points are not split), a further
+pass of pruning is performed by applying the confidence factor. The
+confidence factor may be viewed as how confident the algorithm is
+about the <i>training</i> data. A low value leads to more pruning; a
+high value keeps the model close to the original tree built from the
+training data (the parameter is used in estimating error probabilities
+at leaves).</p>
+
+<p>Run experiments with the following values of the confidence factor
+(default 0.25, maximum 0.5), with the train/test split as
+specified.</p>
+
+<ul>
+  <li>Confidence Factor: 0.002 , 0.008 , 0.02 , 0.08 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5.</li>
+</ul>
+
+<p>
+For these values, record both the training and test accuracy, and plot
+a graph between Accuracy (for both training and test data set in
+same graph) and Confidence Factor. A generic gnuplot script
+to plot your graphs is present in the
+file <code>generic-plot.gnuplot</code>, where you have to write the
+output file name and input file name. Plot using this command.</p>
+
+<p><code>gnuplot generic-plot.gnuplot</code></p>
+
+<p>Save the graphs as <code>confidence-factor.png</code>. Explain the
+patterns you see in the graph in <code>q1-answer.txt</code>.</p>
+
+
+<h3>Task 2: Comparing decision trees and neural networks (4 marks)</h3> 
+
+<p>In this task you will apply both J48 and the MultilayerPerceptron
+to the following data sets: "bank-data.arff" and
+"mnist-small.arff". Note down the accuracy (5-fold
+cross-validation) while keeping the number of epochs for the
+Multilayer Perceptron as 3. Keep all the other parameters at their
+default settings.</p>
+
+<p>What accuracy do these methods achieve on "bank-data.arff" and
+"mnist-small.arff"? Can you think of reasons to explain their relative
+accuracy on these data sets? What are the properties of the data
+sets?  Describe the decision tree model that is learned in each case;
+how are the models learned for the two data sets different? Note down
+your observations in <code>q2-answer.txt</code>.</p>
+
+<p><b>Note:</b> By default Weka takes the last column in the input arff
+file to be the target class, but this is not the case in
+"mnist-small.arff". Use the option <code>-c first</code> while
+training on this data set.</p>
+
+
+<h3>Task 3: Analysis of training time (2 marks)</h3> 
+
+<p>In this task, you will apply both J48 and MultilayerPerceptron on
+the following data sets.</p>
+      
+<ul>
+  <li>iris.arff</li>
+  <li>vote.arff</li>
+  <li>soybean.arff</li>
+  <li>unbalanced.arff</li>
+  <li>segment-challenge.arff</li>
+  <li>supermarket.arff</li>
+  <li>mnist-small.arff</li>
+  <li>mnist-large.arff</li>
+</ul>
+
+<p>Our main object of interest is the <i>time</i> taken to build the
+decision tree and neural network models in each case. Since the
+experiments could take time, keep the split percentage as 80, and the
+number of epochs for the MultilayerPerceptron as 2 for
+"mnist-small.arff" and as 1 for "mnist-large.arff". Plot a common
+graph of time (for building the model, not testing) versus the size of
+the data set, with one curve for each classifier. Also plot a second,
+similar graph of test accuracy versus the size of the data set.</p>
+
+<p>Submit the data for the graphs, as well as the graphs themselves,
+with the following
+names: <code>q3-time.csv</code>, <code>q3-accuracy.csv</code>, <code>q3-time-graph.png</code>,
+and <code>q3-accuracy-graph.png</code>. Write down your observations
+from the two graphs. Is either J48 or MultilayerPerceptron always the
+method of choice? If yes, which one?  If not, why? Provide your
+answers in <code>q4-answer.txt</code>.</p>
+
+<p><b>Note:</b> Since some of these experiments could take considerable
+time to run, proceed to your next task while these runs are finishing.</p>
+
+
+<h3>Task 4: Boosting Decision Stumps (2 marks)</h3> 
+
+<p>Decision stumps are degenerate decision trees with only <b>one</b>
+split (sometimes we also grow random trees—in which features are
+chosen at random to split—to two or some small number of levels,
+combined in an ensemble called a <i>random forest</i>). Naturally the
+expressive power of decision stumps is very limited. However, decision
+stumps can be combined into an ensemble, whose collective
+classification accuracy could be much higher. This task is meant to
+demonstrate the phenomenon of combining multiple <i>weak</i> learners
+into a <i>strong</i> learner, using a meta-learning algorithm called
+Boosting.</p>
+
+<p>For this final task, you will work with DecisionStump and
+LogitBoost on the "musk.arff" data set. LogitBoost constructs an
+additive model, starting with a single decision stump, and then
+training each subsequent decision stump to optimally remedy the errors
+made by the current group of decision stumps (or the
+ensemble). Members of the ensemble are also weighted; the prediction
+made for a test query is the weighted majority of the predictions made
+by the ensemble. While running LogitBoost, you need to specify
+DecisionStump as the base learner.</p>
+
+<p>Note down the accuracies for DecisionTump and Logitboost
+in <code>q5-answer.txt</code>. How many iterations does LogitBoost
+need to reach 90% accuracy? Feel free to try out and comment on more
+variations. You might like to refer to
+the <a href="https://en.wikipedia.org/wiki/Boosting_(machine_learning)">Wikipedia
+page on Boosting</a>.</p>
+
+
+
+<h3>Submission</h3> 
+
+<p>You are not done yet! Place all files in which you have written
+code or modified in a directory named "la-4" concatenated with your
+roll number (say la4-12345678). Tar and Gzip the directory to produce a
+single compressed file (la4-12345678.tar.gz). It must contain the
+following files.</p>
+
+<ol>
+  <li><code>q1-answer.txt</code></li>
+  <li><code>q1-Confidence-factor.csv</code></li>
+  <li><code>q1-Confidence-factor.png</code></li>
+  <li><code>q2-answer.txt</code></li>
+  <li><code>q3-answer.txt</code></li>
+  <li><code>q3-time.csv</code></li>
+  <li><code>q3-accuracy.csv</code></li>
+  <li><code>q3-time-graph.png</code></li>
+  <li><code>q3-accuracy-graph.png</code></li>
+  <li><code>q4-answer.txt</code></li>
+</ol>
+
+<p>Submit this compressed file on Moodle, under Lab Assignment 4.</p>
+
+</body></html>

@@ -1,0 +1,52 @@
+Program:
+   Procedure: main, Return Type: void
+
+      Sequence Ast:
+
+         Asgn:
+            LHS (Name : x)
+            RHS (Num : 14)
+         Asgn:
+            LHS (Name : y)
+            RHS (Num : 36)
+         Asgn:
+            LHS (Name : a)
+            RHS (Name : x)
+         Asgn:
+            LHS (Name : b)
+            RHS (Name : y)
+         WHILE : 
+         CONDITION (
+            Condition: NE
+               LHS (Name : b)
+               RHS (Num : 0))
+         BODY (
+      Sequence Ast:
+
+         Asgn:
+            LHS (Name : t)
+            RHS (Name : b)
+         Asgn:
+            LHS (Name : b)
+            RHS (
+            Arith: MULT
+               LHS (
+            Arith: DIV
+               LHS (Name : a)
+               RHS (Name : b))
+               RHS (Name : b))
+         Asgn:
+            LHS (Name : a)
+            RHS (Name : t))
+         Asgn:
+            LHS (Name : gcd)
+            RHS (Name : a)
+         Asgn:
+            LHS (Name : lcm)
+            RHS (
+            Arith: DIV
+               LHS (
+            Arith: MULT
+               LHS (Name : x)
+               RHS (Name : y))
+               RHS (Name : gcd))

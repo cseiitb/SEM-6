@@ -1,0 +1,3 @@
+Four class tests with a combined worth of 45 marks
+A mid-semester examination worth 20 marks
+An end-semester examination worth 35 marks.

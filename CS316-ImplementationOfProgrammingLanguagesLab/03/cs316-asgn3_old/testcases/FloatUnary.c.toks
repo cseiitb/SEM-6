@@ -1,0 +1,80 @@
+Line: 1 	Ignored lexeme: '// Relational operators are not associative.'
+Line: 2 	Ignored NEWLINE character
+Line: 2 	Token Name: VOID 	Token: void 	Token Code: 263
+Line: 2 	Ignored lexeme: ' '
+Line: 2 	Token Name: NAME 	Token: main 	Token Code: 259
+Line: 2 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 2 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 2 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 3 	Ignored NEWLINE character
+Line: 3 	Token Name: NAME 	Token: main 	Token Code: 259
+Line: 3 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 3 	Token Name: META CHAR 	Token: ) 	Token Code: 41
+Line: 4 	Ignored NEWLINE character
+Line: 4 	Token Name: META CHAR 	Token: { 	Token Code: 123
+Line: 5 	Ignored NEWLINE character
+Line: 5 	Ignored lexeme: '	'
+Line: 5 	Token Name: FLOAT 	Token: float 	Token Code: 261
+Line: 5 	Ignored lexeme: ' '
+Line: 5 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 5 	Token Name: META CHAR 	Token: , 	Token Code: 44
+Line: 5 	Ignored lexeme: ' '
+Line: 5 	Token Name: NAME 	Token: j 	Token Code: 259
+Line: 5 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 6 	Ignored NEWLINE character
+Line: 6 	Ignored lexeme: '	'
+Line: 6 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 6 	Ignored lexeme: ' '
+Line: 6 	Token Name: FNUM 	Token: 3.23 	Token Code: 258
+Line: 6 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 7 	Ignored NEWLINE character
+Line: 7 	Ignored lexeme: '	'
+Line: 7 	Token Name: NAME 	Token: j 	Token Code: 259
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 7 	Ignored lexeme: ' '
+Line: 7 	Token Name: FNUM 	Token: 5.677 	Token Code: 258
+Line: 7 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 8 	Ignored NEWLINE character
+Line: 9 	Ignored NEWLINE character
+Line: 9 	Ignored lexeme: '	'
+Line: 9 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: ASSIGN_OP 	Token: = 	Token Code: 262
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: ARITHOP 	Token: * 	Token Code: 42
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: ARITHOP 	Token: - 	Token Code: 45
+Line: 9 	Token Name: NAME 	Token: j 	Token Code: 259
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: ARITHOP 	Token: / 	Token Code: 47
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: ARITHOP 	Token: + 	Token Code: 43
+Line: 9 	Ignored lexeme: ' '
+Line: 9 	Token Name: ARITHOP 	Token: - 	Token Code: 45
+Line: 9 	Token Name: NAME 	Token: j 	Token Code: 259
+Line: 9 	Token Name: META CHAR 	Token: ; 	Token Code: 59
+Line: 10 	Ignored NEWLINE character
+Line: 11 	Ignored NEWLINE character
+Line: 11 	Ignored lexeme: '	'
+Line: 11 	Token Name: IF 	Token: if 	Token Code: 264
+Line: 11 	Ignored lexeme: ' '
+Line: 11 	Token Name: META CHAR 	Token: ( 	Token Code: 40
+Line: 11 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 11 	Ignored lexeme: ' '
+Line: 11 	Token Name: GE 	Token: >= 	Token Code: 276
+Line: 11 	Ignored lexeme: ' '
+Line: 11 	Token Name: ARITHOP 	Token: - 	Token Code: 45
+Line: 11 	Token Name: NAME 	Token: j 	Token Code: 259
+Line: 11 	Ignored lexeme: ' '
+Line: 11 	Token Name: LT 	Token: < 	Token Code: 273
+Line: 11 	Ignored lexeme: ' '
+Line: 11 	Token Name: ARITHOP 	Token: - 	Token Code: 45
+Line: 11 	Token Name: NAME 	Token: a 	Token Code: 259
+Line: 11 	Token Name: META CHAR 	Token: ) 	Token Code: 41

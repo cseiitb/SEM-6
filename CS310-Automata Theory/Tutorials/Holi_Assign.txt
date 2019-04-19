@@ -1,0 +1,22 @@
+Practice problems for Module 1
+Let * indicate that the problem is solvable using the concepts taught in class,
+let ** indicate that one additional idea may be required over and above the basic concepts, and let *** indicate that more than one idea may be required to solve the problem.
+ 
+Please refer to Sipser (3rd edition) for the problems. 
+ 
+Module 1, Regular languages and finite state automata:
+* Page 84: 1.6c, 1.6f, 1.6l, 1.7b, 1.7c, 1.8b.
+* Page 85: 1.14a,b, 1.15.
+* Page 88: 1.28c, 1.29b.
+ 
+ 
+** Page 90: 1.43, 1.44.
+** Page 93: 1.68
+ 
+*** Page 92: 1.64
+ 
+ 
+ 
+ 
+ 
+ 

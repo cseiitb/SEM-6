@@ -1,0 +1,169 @@
+
+<!-- saved from url=(0098)https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-8/lab-assignment-8.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="./CS 386_ Lab Assignment 6_files/style.css">
+<title>CS 386: Lab Assignment 6</title>
+</head>
+
+<body>
+
+
+<center>
+<h2>
+CS 386: Lab Assignment 8
+</h2>
+(TA in charge: Vaibhav Bhosale)
+</center>
+
+<p><b>Acknowledgement:</b> This lab assignment is based
+on <a href="http://ai.berkeley.edu/multiagent.html">Project
+2: Multi-Agent Pacman </a>, which is a part of a recent offering of CS188
+at UC Berkeley. The code and resources provided here are almost
+entirely drawn from the Berkeley project. We thank the authors at
+Berkeley for making their project available to the public.</p>
+
+<p>Pacman lives in a shiny blue world of twisting corridors and tasty
+round treats. Navigating this world efficiently will be Pacman's first
+step in mastering his domain. We use this game as a model to
+understand how different search algorithms work. In this assignment,
+you will design agents for the classic version of Pacman, including ghosts.
+Along the way, you will implement both minimax and expectimax search and 
+try your hand at evaluation function design.</p>
+
+<h3>Code</h3> 
+
+<p>The base code for this assignment is available
+in <a href="https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-8/multiagent.zip">this zip file</a>. The following files
+are the most relevant ones for you; you will only have to
+edit <code>multiAgents.py</code>.</p>
+
+ <table style="width:100%">
+
+  <tbody><tr>
+    <td><b>File Name</b></td>
+    <td><b>Description</b></td>
+  </tr>
+
+  <tr>
+    <td>multiAgents.py</td>
+    <td>Where all of your multi-agent search agents will reside.</td>
+  </tr>
+
+  <tr>
+    <td>pacman.py</td>
+    <td>The main file that runs Pacman games. This file describes a Pacman GameState type, which you use in this project.</td>
+  </tr>
+
+  <tr>
+    <td>game.py</td>
+    <td>The logic behind how the Pacman world works. This file describes several supporting types like AgentState, Agent, Direction, and Grid.</td>
+  </tr>
+
+  <tr>
+    <td>util.py</td>
+    <td>Useful data structures for implementing search algorithms.</td>
+  </tr>
+</tbody></table>
+
+<p>After downloading the code, unzipping it, and changing to the directory, you should be able to play a game of Pacman by running the following command.</p>
+<p><code>python pacman.py</code></p>
+<p><code>pacman.py</code> supports a number of options (e.g. <code>--layout</code> or <code>-l</code>). You can see the list of all options and their default values via <code>python pacman.py -h</code>.</p>
+
+<h3>Task 1: Reflex Agent (2 marks)</h3> 
+
+<p>Run the provided <code>ReflexAgent</code> in <code>multiAgents.py</code>.</p>
+<code>python pacman.py -p ReflexAgent</code>
+<p>This agent plays poorly even on simple layouts. Your task is to improve the <code>ReflexAgent</code>	in <code>multiAgents.py</code> to play respectably. The provided reflex agent code provides some helpful examples of methods that query the GameState for information. A capable reflex agent will have to consider both food locations and ghost locations to perform well. Your agent should easily and reliably clear the testClassic layout.</p>
+
+<code>python pacman.py -p ReflexAgent -l testClassic</code>
+
+<p><b>Note:</b> Some of the <code>get</code> functions from Gamestate
+return a data type caled <code>Grid</code>; see <code>game.py</code>
+to see how <code>Grid</code> can be
+processed. See <code>pacman.py</code> to find the list
+of <code>get</code> functions available from Gamestate.</p>
+
+<p><b>Evaluation:</b> Your agent will be run on the <code>openClassic</code> layout 10 times. You will receive 1 mark if your agent wins all 10 times, 0.5 marks if it wins more than 5 times, otherwise 0. Make sure your agent does not ever time out. Else, you will be awarded 0 marks for this task. If your agent's average score exceeds 1000, you get an additional 1 mark; if it exceeds 500, you get 0.5 marks. You can try your agent out under these conditions by running the following command.</p>
+<code>python autograder.py -q q1</code>
+
+<p>Note: Your marks for this question are half of the marks displayed by the autograder.</p>
+
+
+<h3>Task 2: Minimax (3 marks)</h3> 
+
+<p>In this task, you will write an adversarial agent in the provided <code>MinimaxAgent</code> class in <code>multiAgents.py</code>. Your agent should work with any number of ghosts, so the algorithm you would be using should be a generalised version of the standard Minimax algorithm. Your code should be able to run the algorithm for an arbitrary depth which can be accessed from <code>self.depth</code> and score your nodes with the supplied <code>self.evaluationFunction</code>. Using these variables is a must since these are populated in response to the command line options.</p>
+
+<p><b>Key Observations:</b>
+</p><ul>
+	<li>The correct implementation of minimax will lead to Pacman losing the game in some tests. This is not a problem: as it is correct behaviour, it will pass the tests.</li>
+	<li>Pacman is always agent 0, and the agents move (take turns) in the order of increasing agent index. 
+Use the <code>getLegalActions(agentIndex)</code> function in GameState to get all the legal actions possible for agent with index <code>agentIndex</code>. Tasks 2 and 3 are based on the assumption that the ghosts will act optimally against Pacman. However, note that in reality, the ghosts pick actions uniformly at random. In Task 4, we explicitly model for this random ghost behaviour.</li>
+	<li>All states in minimax should be GameStates, either passed in to <code>getAction</code> or generated via <code>GameState.generateSuccessor</code>.</li>
+</ul>
+<p></p>
+
+<p><b>Evaluation:</b>Your code will be checked to determine whether it explores the correct number of game states. This is the only way reliable way to detect some very subtle bugs in implementations of minimax. As a result, the autograder will be very picky about how many times you call <code>GamesState.generateSuccessor</code>. All the nodes for which this function is called would be included in the expanded nodes set. Your agent needs to pass all the tests to earn full credit. If the last test case fails, 1 mark will be deducted, and 0.5 marks will be deducted each other failure in the test cases. To test your code, run this command.</p>
+<code>python autograder.py -q q2</code>
+
+
+<h3>Task 3: Alpha-Beta Pruning (3 marks)</h3>
+
+<p>In this task, you will write an adversarial agent in the provided <code>AlphaBetaAgent</code> class in <code>multiAgents.py</code> to more efficiently explore the minimax tree. Your agent should work with any number of ghosts, so your algorithm should be a generalised version of the standard Alpha-Beta Pruning algorithm.</p>
+
+<p><b>Evaluation:</b>Again, your agent will be evaluated to check if
+it explores the correct number of states in the correct
+order. Therefore, it is important that you perform alpha-beta pruning
+without reordering children. In other words, successor states should
+always be processed in the order returned
+by <code>GameState.getLegalActions</code>. Again, do not
+call <code>GameState.generateSuccessor</code> more than
+necessary. Additionally, in order to match the set of states explored
+by the autograder, you must not prune on equality. Your agent needs
+to pass all the tests to earn full credit. If the last test case
+fails, 1 mark will be deducted, and 0.5 marks deducted for each other
+failure on the test cases. Test your code as follows.</p>
+<code>python autograder.py -q q3</code>
+
+<p><b>Note:</b> The correct implementation of alpha-beta pruning will lead to Pacman losing some of the tests. This is not a problem: as it is correct behaviour, it will pass the tests.</p>
+
+<h3>Task 4: Expectimax (3 marks)</h3>
+<p>In this question you will implement the ExpectimaxAgent, which is useful for modeling probabilistic behavior of agents who may make suboptimal choices. Again your algorithm should be generic enough so that multiple ghosts are handled.</p>
+
+<p><b>Evaluation:</b>Your agent needs to pass all the tests to earn full credit. If the last test case fails, 1 mark will be deducted, and 0.5 marks will be deducted for each other failure on the test cases. Run the following command to test your
+solution: <code>python autograder.py -q q4</code>.</p>
+
+<p><b>Note: </b>The correct implementation of expectimax will lead to Pacman losing some of the tests. This is not a problem: as it is correct behaviour, it will pass the tests.
+
+</p>
+
+<h3>Task 5: Evaluation Function (4 marks)</h3>
+<p>Write a more effective evaluation function for Pacman in the provided function <code>betterEvaluationFunction</code>. Provide comments in your code to explain which features you are computing, and how they are combined. </p>
+
+<p><b>Evaluation:</b> Your agent will be run on the layout <code>smallClassic</code> 10 times and marks will be assigned as follows.
+</p><ul>
+	<li>+1 for winning at least 5 times, +2 for winning all 10 times.</li>
+    <li>+1 for an average score of at least 500, +2 for an average score of at least 1000 (including scores on lost games).</li>
+    <li>The additional points for average score will only be awarded if you
+win at least 5 times.</li>
+</ul>
+
+Test your agent as follows: <code>python autograder.py -q q5</code>.<p></p>
+
+<p></p>
+
+<h3>Submission</h3> 
+
+<p>You are not done yet! Place all files in which you have written
+code in or modified in a directory named your roll number (say
+12345678). Tar and Gzip the directory to produce a single compressed
+file (la8-12345678.tar.gz). It must contain the following files.</p>
+
+<ol>
+  <li><code>multiAgents.py                      </code></li>
+</ol>
+
+<p>Submit this compressed file on Moodle, under Lab Assignment 8.</p>
+
+
+
+</body></html>

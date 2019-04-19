@@ -1,0 +1,50 @@
+Program:
+   Procedure: main, Return Type: void
+
+      Sequence Ast:
+
+         Asgn:
+            LHS (Name : a)
+            RHS (Num : 3)
+         Asgn:
+            LHS (Name : b)
+            RHS (Num : 4)
+         Asgn:
+            LHS (Name : c)
+            RHS (Num : 5)
+         Asgn:
+            LHS (Name : d)
+            RHS (
+            Arith: DIV
+               LHS (Name : a)
+               RHS (
+            Arith: PLUS
+               LHS (Name : b)
+               RHS (Name : c)))
+         Asgn:
+            LHS (Name : e)
+            RHS (
+            Arith: PLUS
+               LHS (
+            Arith: DIV
+               LHS (Name : a)
+               RHS (Name : b))
+               RHS (Name : c))
+         Asgn:
+            LHS (Name : f)
+            RHS (
+            Arith: DIV
+               LHS (
+            Arith: PLUS
+               LHS (Name : a)
+               RHS (Name : b))
+               RHS (Name : c))
+         Asgn:
+            LHS (Name : g)
+            RHS (
+            Arith: PLUS
+               LHS (Name : a)
+               RHS (
+            Arith: MINUS
+               LHS (Name : b)
+               RHS (Name : c)))

@@ -1,0 +1,24 @@
+Program:
+   Procedure: main, Return Type: void
+
+      Sequence Ast:
+
+         Asgn:
+            LHS (Name : f)
+            RHS (
+            Arith: UMINUS
+               LHS (Num : 5.50))
+         Asgn:
+            LHS (Name : g)
+            RHS (Num : 6.60)
+         IF : 
+         CONDITION (
+            Condition: LT
+               LHS (Name : f)
+               RHS (Name : g))
+         THEN (
+      Sequence Ast:
+)
+         ELSE (
+      Sequence Ast:
+)

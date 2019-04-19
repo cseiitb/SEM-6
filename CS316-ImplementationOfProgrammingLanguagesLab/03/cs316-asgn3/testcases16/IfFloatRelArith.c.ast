@@ -1,0 +1,57 @@
+Program:
+   Procedure: main, Return Type: void
+
+      Sequence Ast:
+
+         Asgn:
+            LHS (Name : a)
+            RHS (Num : 2.30)
+         Asgn:
+            LHS (Name : b)
+            RHS (Num : 3.40)
+         Asgn:
+            LHS (Name : c)
+            RHS (Num : 4.50)
+         Asgn:
+            LHS (Name : d)
+            RHS (Num : 5.60)
+         Asgn:
+            LHS (Name : e)
+            RHS (Num : 6.70)
+         IF : 
+         CONDITION (
+            Condition: AND
+               LHS (
+            Condition: GE
+               LHS (Name : a)
+               RHS (
+            Arith: PLUS
+               LHS (Name : b)
+               RHS (Name : c)))
+               RHS (
+            Condition: GT
+               LHS (Name : d)
+               RHS (
+            Arith: DIV
+               LHS (
+            Arith: MULT
+               LHS (Name : e)
+               RHS (Name : d))
+               RHS (Name : c))))
+         THEN (
+         Asgn:
+            LHS (Name : a)
+            RHS (
+            Arith: DIV
+               LHS (
+            Arith: MULT
+               LHS (Name : a)
+               RHS (Name : d))
+               RHS (Name : e)))
+         ELSE (
+         Asgn:
+            LHS (Name : e)
+            RHS (
+            Arith: PLUS
+               LHS (Name : e)
+               RHS (Name : d)))

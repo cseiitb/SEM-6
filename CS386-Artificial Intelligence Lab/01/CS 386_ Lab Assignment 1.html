@@ -1,0 +1,364 @@
+
+<!-- saved from url=(0098)https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-1/lab-assignment-1.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="./CS 386_ Lab Assignment 1_files/style.css">
+<title>CS 386: Lab Assignment 1</title>
+</head>
+
+<body>
+
+<center>
+<h2>
+CS 386: Lab Assignment 1
+</h2>
+(TAs in charge: Siddharth A. and Krishna Murthy Bukkapatnam)
+</center>
+
+
+<p><a href="https://www.cs.utexas.edu/~AustinVilla/sim/halffieldoffense/">Half
+Field Offense</a> (HFO) is a multi-agent task that is a part
+of <a href="https://en.wikipedia.org/wiki/RoboCup_2D_Soccer_Simulation_League">RoboCup
+soccer</a>. As apparent from the video below, it is a simplified
+version of soccer played on one half of the soccer field between an
+offense team and a defense team. Each coloured circular disk is a
+soccer player, controlled by a separate client program. The clients
+connect and communicate with a server, periodically getting snapshots
+of their state and specifying actions. The server implements the
+physical simulation, and applies the rules of soccer. The HFO
+simulator allows us to simulate and evaluate several
+offensive/defensive strategies involving teams of different sizes.</p>
+
+<br>
+<div align="center" style="float:CENTER; margin:0 15px 5px 0;">
+  <video width="640" controls="">
+    <source src="3v3.mp4" type="video/mp4">
+  </video>
+</div>
+<p align="center">
+<font size="1">(Video source: https://www.cse.iitb.ac.in/~shivaram/buffer/31876/3v3.mp4.)</font>
+</p>
+
+<p>In this assignment, we shall focus solely on the <b>behaviour of an
+offense player when it is in possession of the ball</b>. When not in
+possession of the ball, offense players play a fixed strategy. The
+defense players, too, follow a fixed, programmed, strategy. When the
+offense team does not have possession of the ball, at least one player
+goes straight to the ball in order to get possession. What must it do
+once it has possession?</p>
+
+<p>The player represents its state through features such as distances
+and angles between itself and other players, as well as with static
+objects such as the goal. The actions available to the player are
+DRIBBLE, SHOOT, and PASS(k), wherein k is the index of an offense
+teammate (if there are any). Your task is precisely to code the
+mapping between state and action: such a mapping is called
+a <i>policy</i>.</p>
+
+<p>Detailed descriptions of the state and action spaces are mentioned
+in the sections below. A sequence of steps is provided to get you up
+and running. You will submit agents for playing 1 versus 1 (1v1) and 2
+versus 2 (2v2) HFO.</p>
+
+<h3>Code</h3> 
+
+<a href="https://www.cse.iitb.ac.in/~shivaram/teaching/cs344+386-s2017/resources/la-1/HFO-master.tar.gz">HFO-master.tar.gz</a>
+
+<h3>Installation and Execution</h3> 
+
+First, be sure to be connected to the Internet (log in
+through <a href="https://internet.iitb.ac.in/">https://internet.iitb.ac.in/</a><a>).
+
+<ol>
+
+<li> Download the tar file and extract it.</li>
+
+<li> Run the following commands inside the <code-normal>HFO-master</code-normal> directory for installation.</li>
+
+<ol>
+<li> <code-normal>mkdir build &amp;&amp; cd build</code-normal></li>
+<li> <code-normal>cmake -DCMAKE_BUILD_TYPE=Release ..</code-normal></li>
+<li> <code-normal>make -j4</code-normal></li>
+<li> <code-normal>make install</code-normal></li>
+</ol>
+
+<li> Test the installation by running 1v1 and 2v2 simulations; run the
+following commands inside the <code-normal>HFO-master</code-normal> directory.
+<ol>
+<li> <code-normal>./bin/HFO --offense-npcs=1 --defense-npcs=1 --no-sync</code-normal></li>
+<li> <code-normal>./bin/HFO --offense-npcs=2 --defense-npcs=2 --no-sync</code-normal></li>
+</ol>
+You must see 1v1 and 2v2 games being simulated.</li>
+</ol>
+
+<p>Here are some of the relevant command line options for running HFO.</p>
+<ul>
+<li> <code-normal>--no-sync</code-normal>: Run the simulations in
+real-time, and not in "synchronised" mode. This option is useful for
+visualising behaviours. Running with sync-mode on is significantly
+faster, and can be useful for testing the performance of your
+agent.</li>
+<li> <code-normal>--trials=[num_trials]</code-normal>: Specify the number of episodes by adding this flag.</li>
+<li> <code-normal>--fullstate</code-normal>: This option removes noise
+in the agent's state features, making decision making easier for the
+agent. Your agent will indeed be tested with full state (without state
+noise).</li>
+<li> <code-normal>--no-logging</code-normal>: No logs will be generated.</li>
+<li> <code-normal>--offense-agents=[num_agents]</code-normal>: The
+server will wait for <code-normal>num_agents</code-normal> to connect to it before starting the
+game.</li>
+<li> <code-normal>--defense-npcs=[num_agents]</code-normal>: The
+server will spawn <code-normal>num_agents</code-normal> defense
+npcs.</li>
+</ul>
+
+<p>You can kill simulations by pressing CTRL+c in the terminal running
+the server.</p>
+
+
+<h3>States and Actions</h3> 
+
+<p>The agent's state is represented using a feature vector, which
+consists of 10 + 6T + 3O floating point numbers, where T is the number
+teammates (one less than the number of offense players), and O is the
+number of opponents. The features are listed below in sequence.</p>
+
+ <table style="width:100%">
+
+  <tbody><tr>
+    <td><b>Index</b></td>
+    <td><b>Feature</b></td>
+    <td><b>Description</b></td>
+  </tr>
+
+  <tr>
+    <td>0</td>
+    <td>x position</td>
+    <td>Agent's global x coordinate</td>
+  </tr>
+
+  <tr>
+    <td>1</td>
+    <td>y position</td>
+    <td>Agent's global y coordinate</td>
+  </tr>
+
+  <tr>
+    <td>2</td>
+    <td>Orientation</td>
+    <td>The global direction the agent is facing</td>
+  </tr>
+
+  <tr>
+    <td>3</td>
+    <td>Ball x position</td>
+    <td>Ball's global x coordinate</td>
+  </tr>
+
+  <tr>
+    <td>4</td>
+    <td>Ball y position</td>
+    <td>Ball's global y coordinate</td>
+  </tr>
+
+  <tr>
+    <td>5</td>
+    <td>Able to Kick</td>
+    <td>Boolean indicating if the agent can kick the ball</td>
+  </tr>
+
+  <tr>
+    <td>6</td>
+    <td>Goal centre proximity</td>
+    <td>Distance between agent and goal centre</td>
+  </tr>
+
+  <tr>
+    <td>7</td>
+    <td>Goal centre angle</td>
+    <td>Angle between x axis and line connecting agent to goal centre</td>
+  </tr>
+
+  <tr>
+    <td>8</td>
+    <td>Goal opening angle</td>
+    <td>The magnitude of the largest open angle (between opponents) of
+the agent to the goal</td>
+  </tr>
+
+  <tr>
+    <td>9</td>
+    <td>Proximity to opponents</td>
+    <td>Proximity to the closest opponent</td>
+  </tr>
+
+  <tr>
+    <td>10–(10+T-1)</td>
+    <td>Teammate goal opening angle</td>
+    <td>For each teammate, its goal opening angle</td> 
+  </tr>
+
+  <tr>
+    <td>(10+T)–(10+2T-1)</td>
+    <td>Teammate proximity to opponent</td>
+    <td>For each teammate, its proximity to its closest opponent</td> 
+  </tr>
+
+  <tr>
+    <td>(10+2T)–(10+3T-1)</td>
+    <td>Teammate pass opening angle</td>
+    <td>For each teammate, the magnitude of the open angle available
+    to pass the ball to the teammate</td>
+  </tr>
+
+  <tr>
+    <td>(10+3T)–(10+6T-1)</td>
+    <td>Teammate global x position, teammate global y position, teammate uniform number</td>
+    <td>Three consecutive features for each teammate: global x position, global y position, and uniform number</td>
+  </tr>
+
+  <tr>
+    <td>(10+6T)–(10+6T+3O-1)</td>
+    <td>Opponent global x position, opponent global y position, opponent uniform number</td>
+    <td>Three consecutive features for each opponent: global x position, global y position, and uniform number</td>
+  </tr>
+
+</tbody></table> 
+
+<p>All non-boolean features except the uniform numbers are normalized
+to the range [-1, 1]. It is possible that occasionally a feature
+comes marked as "invalid". If so it is given a value of -2.</p>
+
+<p>The following are the actions available to the agent. These are all
+"high-level" actions, which are implemented by the agent using
+lower-level skills (which we need not bother with for this
+assignment).</p>
+ 
+<ol>
+<li>SHOOT: This action executes the agent's best possible shot to the goal.</li>
+<li>PASS(k): Passes the ball to the teammate with uniform number k.</li>
+<li>DRIBBLE: Advances the ball towards the goal using a combination of short kicks and moves.</li>
+</ol>
+
+<p>Observe that for 1v1 HFO, the number of state features is 13 and
+the number of actions is 2 (PASS is not valid). For 2v2 HFO, the
+number of state features is 19 and the number of actions is 3. The
+policies you program need not use all the features available; take
+some time to think which ones could matter the most.</p>
+
+<h3>Task 0 (Ungraded)</h3> 
+
+<p>This task is to familiarise you with the simulation, the state
+variables, and the task facing the offense player with the
+ball. Specifically, look at the <code-normal>getAction()</code-normal>
+function in 1v1agent.cpp. It is given the state features as input; as
+output it picks a legal action uniformly at random. Verify by running
+autograder-1v1.sh that this strategy yields a scoring percentage of
+approximately 5%.</p>
+
+<p>Use the <code-normal>--no-sync</code-normal> flag to observe the
+behaviour of the offense player with the ball. Print out a few
+relevant state features to observe how they vary as the configuration
+of players on the field
+changes. Change <code-normal>getAction()</code-normal> such that the
+action chosen depends on some state feature(s). Visualise the
+resulting policy.</p>
+
+
+<h3>Task 1 (4 marks)</h3> 
+
+<p>In this task, you have to program a 1v1 offense agent to maximise
+its scoring percentage. Revise
+the <code-normal>getAction()</code-normal> function in the file
+1v1agent.cpp. Follow these steps to experiment with your code.
+
+</p><ol>
+<li>Start the server by running the following command from the <code-normal>main</code-normal> directory.</li>
+
+<br>
+         <code-normal>./bin/HFO --offense-agents=1 --defense-npcs=1 --trials=1000
+         --fullstate --no-logging --no-sync</code-normal><br><br>
+
+<li>In a new terminal from the <code-normal>example</code-normal>
+directory, create the executable by running the following command.</li>
+<br>
+
+<code-normal>./make_executable1v1.sh</code-normal><br><br>
+
+<li>Spawn the agent by running the following command.</li><br> 
+
+<code-normal>./1v1agent --numAgents 1</code-normal><br>
+
+</ol>
+
+<p>To check performance of your agent, run <code-normal>./autograder-1v1.sh</code-normal> (in directory
+<code-normal>example/</code-normal>). This script will print out the
+fraction of episodes that resulted in a goal.</p>
+
+
+<h3>Task 2 (6 marks)</h3> 
+
+<p>In this task, you have to program a 2v2 offense agent to maximise
+the scoring percentage of the offense team. Revise
+the <code-normal>getAction()</code-normal> function in the file
+2v2agent.cpp. By running the steps below, you will essentially run
+both offense players with the same binary (albeit the players will have
+different uniform numbers). Hence, both players will execute the code
+you fill into <code-normal>getAction()</code-normal> whenever they
+have possession of the ball.</p>
+
+<ol>
+<li>Start the server by running the following command from the <code-normal>main</code-normal> directory.</li>
+
+<br>
+         <code-normal>./bin/HFO --offense-agents=2 --defense-npcs=2
+--trials=1000 --fullstate --no-logging --no-sync</code-normal><br><br>
+
+<li>In a new terminal from the <code-normal>example</code-normal>
+directory, create the executable by running the following command.</li>
+<br>
+
+<code-normal>./make_executable2v2.sh</code-normal><br><br>
+
+<li>Spawn the agent by running the following command.</li><br> 
+
+<code-normal>./2v2agent --numAgents 2</code-normal><br>
+
+</ol>
+
+<p>To check performance of your agent, run <code-normal>./autograder-2v2.sh</code-normal> (in directory
+<code-normal>example/</code-normal>). This script will print out the fraction of episodes that resulted in a
+goal.</p>
+
+<p>You are likely to find the <code-normal>PASS</code-normal> action
+useful for increasing the scoring percentage in 2v2 HFO. Although in
+general, <code-normal>PASS</code-normal> needs to be passed the
+uniform number of a teammate as argument, the code you are given is
+set up such that <code-normal>PASS</code-normal> (without any
+arguments) in 2v2 HFO will automatically pass the ball to the sole
+teammate of the offense agent with the ball.</p>
+
+<h3>Submission</h3> 
+
+Place 1v1agent.cpp and 2v2agent.cpp (the two files that you have
+edited) in a directory named your roll number (say 12345678). Tar and
+Gzip the directory to produce a single compressed file
+(12345678.tar.gz). Submit this file on Moodle, under Lab Assignment 1.
+
+<h3>Evaluation</h3> 
+
+<p>Your agents will be evaluated by calling the corresponding
+autograder scripts.</p>
+
+<p>The 1v1 agent will be evaluated for 4 marks. It will be given 4
+marks if its goal scoring percentage exceeds 75%, otherwise 3 marks if
+it exceeds 60%, otherwise 2 marks if it exceeds 50%, otherwise 0
+marks. Extra credit of 2 marks will be awarded if the agent's goal
+scoring percentage exceeds 95%.</p>
+
+<p>The 2v2 agent will be evaluated for 6 marks. It will be given 6
+marks if its goal scoring percentage exceeds 60%, otherwise 4 marks if
+it exceeds 50%, otherwise 2 marks if it exceeds 40%, otherwise 0
+marks. Extra credit of 2 marks will be awarded if the agent's goal
+scoring percentage exceeds 75%.</p>
+
+</a></body></html>
